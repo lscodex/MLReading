@@ -1,0 +1,10 @@
+icon
+__pycache__/
+readingTime.csv
+*.py[cod]
+*.swp
+*.swo
+.env
+.venv
+__pypackages__/
+.cache
