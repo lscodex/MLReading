@@ -13,8 +13,9 @@ from  datetime import date
 from helper.gui_shows import GUISHOW
 
 # constant variables
-gui = tk.Tk()
-# file name
+gui = tk.Tk(className="MLReading")
+
+#className="MLReading" file name
 csv_file_name = "readingTime.csv"
 ######################################################
 # create csv file on folder

@@ -1,9 +1,11 @@
 import tkinter as tk 
+import tkinter.filedialog
 from tkinter import ttk
 import time
 import csv
 import pandas as pd
 import datetime
+import os
 from tkinter import messagebox as mb
 from PIL import Image, ImageTk
 
@@ -15,7 +17,8 @@ class GUISHOW(tk.Frame):
         self.master = master
         self.csv_file_name = csv_file_name
         self.master["background"] = "orange red"
-        self.master.title("ReadingTime")
+        #self.master.iconbitmap("images/mlread.ico")
+        self.master.title("MLReading")
         self.master.geometry("300x300")
         self.master.resizable(0,0)
         self.master.update()
@@ -36,16 +39,50 @@ class GUISHOW(tk.Frame):
         self.get_time = None
         # size and , current_date
         self.size = None
+        # set menu
+        self.get_cvs_file()
         # init gui and shows
         self.make_gui()
         # there is the error
         #self.master.pack(expand=False, fill=tk.BOTH)
         self.master.mainloop()
+
+######################################################
+# create menu bar for csv file open
+######################################################
+    def open_file(self):
+        # open folder in mlread gui
+        self.master.getFile = tk.filedialog.askopenfilename(initialdir="", title="select file" ,filetypes=(("csv files","*.csv"),("all files")))
+
+    def ask_quit(self):
+        if mb.askokcancel("Quit","You want to quit now?"):
+            self.master.destroy()
+    
+    def quit_gui(self): 
+        self.master.quit()
+
+    def get_cvs_file(self):
+        # set the menu bar
+        self.menu = tk.Menu(self.master)
+        # set file menu
+        file_menu = tk.Menu(self.menu)
+        # getting file open
+        file_menu.add_cascade(label="Open CSV FILE", command=self.open_file) 
+        # exit the program
+        self.menu.add_cascade(label="File", menu=file_menu)
+        # TODO: will be added About menu
+        # self.menu.add_cascade(label="About",command= )
+        self.menu.add_cascade(label="Exit", command=self.ask_quit)
+        # with subtitle menu 
+        self.master.config(menu=file_menu)
+        # main menu 
+        self.master.config(menu=self.menu)
+
 ######################################################
 # dialog box init
 ######################################################
     def show_message(self):
-        mb.showinfo("No","New data is saved to:{}".format(self.size))
+        mb.showinfo("Success!","New data is saved to:{}".format(self.size))
     def delete_values(self, get_data):
         v_time_id =get_data[0]
         ans = mb.askyesno('Delete data', 'Do you want to delete "{}"'.format(v_time_id))
@@ -192,17 +229,22 @@ class GUISHOW(tk.Frame):
 # create csv filename
 ######################################################
     def create_csv_ongui(self):
+        getting_values =[]
         # insert values to csv file
         with open(self.csv_file_name, newline="") as file:
             reader = csv.reader(file)
             # skip header
-            next(reader,None)
-            r = 0 
-            for i, val in enumerate(reader):
-                self.tree.insert("",i,text="{}".format(val[0]),values=(val[0],val[1], val[2]))
+            next(reader)
+            for i,val in enumerate(reader):
+                if len(val) > 0:
+                    getting_values.append(val)
+            for i in range(0,len(getting_values)):
+                    self.tree.insert("",i,text="{}".format(getting_values[0][i]),\
+                                    values=(getting_values[i][0],getting_values[i][1], getting_values[i][2]))
 
     # gui update at desired location
     def update_table_gui(self, get_if_update):
+        print("update gui")
         if get_if_update: 
             self.create_csv_ongui()
         else:
@@ -216,7 +258,8 @@ class GUISHOW(tk.Frame):
     def frame_for_button(self):
         self.frame_button = tk.Frame(self.master, background="orange red") 
         self.frame_button.configure(width=self.master.winfo_width())
-        self.frame_button.pack(fill=tk.X)
+        self.frame_button.place(relx=1.5,rely=1.5,anchor=tk.CENTER)
+        self.frame_button.pack()
         self.frame_button.update()
         self.create_timer()
         self.reset_time()
@@ -249,7 +292,7 @@ class GUISHOW(tk.Frame):
         self.tree.column("time_id",width=50)
         self.tree.column("time",width=50)
         self.tree.column("date",width=50)
-        self.create_csv_ongui()
+        self.update_table_gui(True)
         # not delete this, it remove #0 id columns in tkinter
         self.tree["show"] =" headings"
 
