@@ -7,8 +7,8 @@ class CreateCsvFile:
     def __init__(self):
         # constant path variable
         self.__csv_file_name = "readingTime.csv"
-        self.__columns_list = ["time_id", "time", "date"] 
-        self.__columns_tuple = ("time", "date", "time_id")
+        self.__columns_list = ["time_id", "time", "date", "wpm", "pages", "words"] 
+        self.__columns_tuple = ("time", "date", "time_id", "wpm","pages","words")
         self.__prepare_file_for_header()
 
 ######################################################
