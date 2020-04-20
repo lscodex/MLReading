@@ -29,6 +29,12 @@ class GUISHOW(tk.Frame):
         self.__master.rowconfigure(0, weight=1)
         # treeview init
         self.__tree= tk.ttk.Treeview(self.__master)
+        # labels
+        self.__pages_labels = tk.Label(self.__master)
+        self.__words_labels = tk.Label(self.__master)
+        # entrys
+        self.__pages_entry = tk.Entry(self.__master)
+        self.__words_entry = tk.Entry(self.__master)
         # time configuration
         self.timerstr = tk.StringVar()
         self.elapsedTime = 0.0
@@ -282,15 +288,17 @@ class GUISHOW(tk.Frame):
         self.frame_button.pack()
         self.frame_button.update()
 
-
+        # create timer button
         self.create_timer()
         self.reset_time()
         self.start_time()
         self.stop_time()
+    
         # create supply button
         self.frame_supply_button = tk.Frame(self.__master)
         self.frame_supply_button.pack(fill="both",expand=True)
         self.supply_to_pandas()
+
 
 ######################################################
 # update canvas
@@ -333,10 +341,26 @@ class GUISHOW(tk.Frame):
         self.__tree.bind("<Double-1>",self.delete_values_data)
         self.__tree.bind("<Button-1>", self.m_selection)
         self.__tree.pack(side=tk.TOP, fill=tk.X)
+
+######################################################
+# create entry section for words and pages
+######################################################
+    def entries(self):
+        # label creating
+        self.__words_labels["text"]="Please, Enter Words Count"
+        self.__words_labels.pack( fill="both", expand=True)
+        self.__words_entry.pack(fill="both",expand=True)
+        self.__pages_labels["text"] = " Please, Enter the Pages Count"
+        self.__pages_labels.pack(fill="both", expand=True)
+        self.__pages_entry.pack(fill="both",expand=True)
+
+
 ######################################################
 # create graphic ui with widget
 ######################################################
     def make_gui(self): 
+        # create entrys for pages and words
+        self.entries()
         # all functions are here.
         self.frame_for_button() 
         self.frame_canvas()
