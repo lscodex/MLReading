@@ -8,14 +8,14 @@ class CreateCsvFile:
         # constant path variable
         self.__csv_file_name = "readingTime.csv"
         self.__columns_list = ["time_id", "time", "date", "wpm", "pages", "words"] 
-        self.__columns_tuple = ("time", "date", "time_id", "wpm","pages","words")
+        self.__columns_tuple = ("time_id", "time", "date", "wpm","pages","words")
         self.__prepare_file_for_header()
 
 ######################################################
 # check to csv row 
 ######################################################
     def __checking_file(self):
-        # removing columns that beyond row
+        # removing columns that beyond ro
         df = pd.read_csv(self.__csv_file_name)
         df.set_index("time_id",inplace=True)
         for col in self.__columns_tuple:

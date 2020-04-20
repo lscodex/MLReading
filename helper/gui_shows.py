@@ -21,7 +21,7 @@ class GUISHOW(tk.Frame):
         self.__master["background"] = "orange red"
         #self.__master.iconbitmap("images/mlread.ico")
         self.__master.title("MLReading")
-        self.__master.geometry("300x300")
+        self.__master.geometry("500x500")
         self.__master.resizable(0,0)
         self.__master.update()
         # configure cols and rows
@@ -290,6 +290,7 @@ class GUISHOW(tk.Frame):
 
         # create timer button
         self.create_timer()
+        # buttons 
         self.reset_time()
         self.start_time()
         self.stop_time()
@@ -345,15 +346,35 @@ class GUISHOW(tk.Frame):
 ######################################################
 # create entry section for words and pages
 ######################################################
+    def toggle_state(self,*_):
+        print(self.__words_entry.get())
+    def words_onclick(self,x):
+        if len(self.__words_entry.get()) == 0:
+            print("len is empty")
+        else: 
+            self.__pages_entry["state"]= "normal"
+            self.__pages_entry.focus()
+    def pages_onclick(self,x):
+        if len(self.__pages_entry.get()) == 0:
+            print("len is empty")
+        else: 
+            # button clicked
+
     def entries(self):
+        self.__pages_entry["state"] = "disabled"
+        self.__words_entry.bind("<Return>", self.words_onclick)
         # label creating
         self.__words_labels["text"]="Please, Enter Words Count"
         self.__words_labels.pack( fill="both", expand=True)
+        self.__words_entry.configure(justify="center")
         self.__words_entry.pack(fill="both",expand=True)
+            
         self.__pages_labels["text"] = " Please, Enter the Pages Count"
         self.__pages_labels.pack(fill="both", expand=True)
+        self.__pages_entry.configure(justify="center")
         self.__pages_entry.pack(fill="both",expand=True)
-
+        self.__pages_enry.bind("<Return>", self.pages_onclick)
+            
 
 ######################################################
 # create graphic ui with widget
