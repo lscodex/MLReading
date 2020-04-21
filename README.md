@@ -21,3 +21,6 @@ wpm = words on page / seconds to read page * 60
 300-400 - > fast
 400+ - > extreme rare
 
+GUI Image Snapshot 
+![main gui] (image/image_for_gui.png)
+

@@ -8,3 +8,6 @@ readingTime.csv
 .venv
 __pypackages__/
 .cache
+.idea
+.idea*
+
