@@ -13,8 +13,8 @@ This project will make it easier for you to keep your reading data.
 
 
 # a formula that calculate words per second WPM with a source
-(minutes) *60 + seconds =  seconds to read pageseconds to read page
-wpm = (words on page / seconds to read page)  * 60 
+* (minutes) *60 + seconds =  seconds to read pageseconds to read page
+* wpm = (words on page / seconds to read page)  * 60 
 
 ## average reading speed for adults 
 * 0-100      - > way below average
