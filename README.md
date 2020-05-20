@@ -24,7 +24,7 @@ wpm = (words on page / seconds to read page)  * 60
 * 400-600+   - > doctorate degree level
 * 1000-2000+ - > extreme rare - professional speed reader
 
-## Source 
+## Sources
 * [The Daily Dabble](https://the-daily-dabble.com/calculate-words-per-minute-reading-speed/) - to explains calculate of wpm
 * [Penandthepad](https://penandthepad.com/calculate-words-per-minute-reading-7563359.html) - to explains calculate of wpm
 ## GUI Image Snapshot 
