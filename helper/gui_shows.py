@@ -79,7 +79,7 @@ class GUISHOW(tk.Frame):
                                  height=self.button_height, width=self.button_width,
                                  state="disabled",
                                  command=lambda: self.handler_reset_time())
-        self.__add_all = tk.Button(self.__frame_supply_button, text="Added",
+        self.__add_all = tk.Button(self.__frame_supply_button, text="Enter",
                                    background="green", foreground="white", state="disabled",
                                    command=lambda: self.handler_apply_time())
         # init gui and shows
@@ -162,22 +162,15 @@ class GUISHOW(tk.Frame):
         self.size, df = self.df_size()
         cur_date = self.df_current_date()
         # remove duplicated variable
-        print(df)
         for i in df['time_id']:
             if self.size == i:
                 self.size -= 1
                 if self.size == i:
                     self.size += 2
-        print("timer : " ,time )
-        print("word ", words)
-        print("page", page)
-        print(self.hm.calculate_wpm())
         fields = [self.size, time, cur_date, str(self.hm.calculate_wpm()),  words, page]
-        print(len(fields))
         with open(self.__csv_file_name, 'a') as f:
             writer = csv.writer(f)
             writer.writerow(fields)
-
     ######################################################
     #  callbacks
     ######################################################
@@ -186,8 +179,13 @@ class GUISHOW(tk.Frame):
         if self.running:
             # timerstr return string values
             type_of_seconds = self.timerstr.get().split(":")
-            sum_of_seconds = (int(type_of_seconds[0]) * 60 * 60) + (int(type_of_seconds[1]) * 60) + (
-                int(type_of_seconds[2]))
+            # there is the calculation error here
+            #sum_of_seconds = (int(type_of_seconds[0]) * 60 * 60) + (int(type_of_seconds[1]) * 60) + (
+                #int(type_of_seconds[2]))
+            # information for type_fo_seconds[2] miliseconds so it does not multiply 60
+            sum_of_seconds = (int(type_of_seconds[0])* 60) + (int(type_of_seconds[1]))
+            #print("type-1: {}, type-2: {} , type_3:{}".format(type_of_seconds[0],type_of_seconds[1],type_of_seconds[2]));
+            #print("sum_of_seconds: {}".format(sum_of_seconds))
             self.hm.set_seconds(sum_of_seconds)
             self.hm.set_get_time(self.timerstr.get())
 
@@ -215,7 +213,13 @@ class GUISHOW(tk.Frame):
         self.elapsedTime = 0.0
         self.set_time(self.elapsedTime)
         self.__play["state"] = "disabled"
-        self.__stop["state"] = "disabeled"
+        self.__stop["state"] = "disabled"
+        self.__words_entry.delete(0,'end')
+        self.__pages_entry.delete(0,'end')
+        self.__words_entry.focus()
+        self.__reset["state"] = "disabled"
+        self.__pages_entry["state"] = "disabled"
+        self.__add_all["state"] ="disabled"
 
     def reset_time(self):
         self.__reset.pack(side=tk.LEFT)
@@ -233,6 +237,7 @@ class GUISHOW(tk.Frame):
             self.running = False
             self.__play["state"] ="disabled"
             self.__stop["state"] = "disabled"
+            self.__add_all["state"] ="normal"
 
     def stop_time(self):
         self.__stop.pack(side=tk.LEFT)
@@ -242,7 +247,6 @@ class GUISHOW(tk.Frame):
     ######################################################
     def handler_apply_time(self):
         # save file
-        print(self.hm.get_words_count())
         self.save_data_to_csv(self.hm.get_get_time(), self.hm.get_words_count(), self.hm.get_page_count())
         self.update_header()
         self.update_table_gui(False)
@@ -315,7 +319,6 @@ class GUISHOW(tk.Frame):
 
     # gui update at desired location
     def update_table_gui(self, get_if_update):
-        print("update gui")
         if get_if_update:
             self.create_csv_ongui()
         else:
@@ -385,13 +388,14 @@ class GUISHOW(tk.Frame):
     # create entry section for words and pages
     ######################################################
     def toggle_state(self, *_):
-        print(self.__words_entry.get())
+       #print(self.__words_entry.get())
+       print("grep the words")
 
     def words_onclick(self, x):
         if len(self.__words_entry.get()) == 0:
             pass
         else:
-            print("here is the words entry", self.__words_entry.get())
+            #print("here is the words entry", self.__words_entry.get())
             self.hm.set_words_count(self.__words_entry.get())
             self.__pages_entry["state"] = "normal"
             self.__pages_entry.focus()
